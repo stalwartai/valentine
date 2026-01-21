@@ -15,24 +15,18 @@ import json
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Configure Gemini
 gemini_api_key = os.environ.get('GEMINI_API_KEY')
 if gemini_api_key:
     genai.configure(api_key=gemini_api_key)
 
-# Create the main app without a prefix
 app = FastAPI()
-
-# Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
 
-# Define Models
 class StatusCheck(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
@@ -44,15 +38,11 @@ class StatusCheckCreate(BaseModel):
     client_name: str
 
 
-# Gift Generation Models
 class GiftIdeaRequest(BaseModel):
     giver_name: str
     recipient_name: str
     budget: str
-    hobbies: str
-    interests: str
-    favorites: str
-    personality: str
+    about_them: str
     special_memory: str
     giver_gift_idea: str
     why_meaningful: str
@@ -83,7 +73,6 @@ class GiftResponse(BaseModel):
     bundle: Optional[Bundle] = None
 
 
-# Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
     return {"message": "Valentine's Gift AI API"}
@@ -113,84 +102,82 @@ async def get_status_checks():
 @api_router.post("/generate-gifts", response_model=GiftResponse)
 async def generate_gifts(request: GiftIdeaRequest):
     try:
-        # Build system prompt
-        system_prompt = """You are "GiftSense", an expert gift advisor specializing in thoughtful, personalized romantic gifts.
+        system_prompt = """You are an expert gift advisor who creates deeply meaningful, emotionally resonant gift ideas.
 
-Your task: Generate gift concepts tailored to the recipient's personality, interests, and relationship context.
+Your specialty: Understanding the emotional core of relationships and translating memories into tangible gifts.
 
-For each gift, provide:
-1. title (clear, 5-6 words max)
-2. description (what it is, 20-30 words)
-3. why_it_works (2-3 sentences connecting to their personality/interests/memories)
-4. personalization_tip (1 sentence on how to customize)
-5. estimated_cost (within budget, as STRING format like "₹1,500" or "₹800-1,200")
-6. category (thoughtful/creative/experiential/practical/romantic)
+CRITICAL RULES:
+1. DO NOT simply restate what the user described - be CREATIVE and INSIGHTFUL
+2. DO NOT copy their words - interpret the deeper meaning and feelings
+3. Each gift must feel like a revelation, not a summary
+4. Focus on the EMOTIONAL IMPACT and memories, not just interests
+5. Gifts should surprise them with how well you understood their connection
 
-Guidelines:
-- Gifts must be obtainable in India
-- Stay within budget
-- Avoid generic suggestions
-- Connect to unique traits
-- Make actionable (user knows where/how to get it)
-- Tone: warm, sincere, encouraging
-- ALL FIELDS MUST BE STRINGS, especially estimated_cost
+For each gift provide:
+- title: Creative, evocative (5-6 words)
+- description: What it is physically (20-30 words)
+- why_it_works: Deep emotional reasoning connecting to their story (2-3 sentences)
+- personalization_tip: Specific action to make it more meaningful (1 sentence)
+- estimated_cost: String format like "₹1,500" or "₹800-1,200"
+- category: thoughtful/creative/experiential/practical/romantic
 
-Return as valid JSON only, no markdown formatting."""
+Return valid JSON only. All values must be strings."""
 
-        # Build user prompt
-        user_prompt = f"""Context:
+        user_prompt = f"""RELATIONSHIP CONTEXT:
 Giver: {request.giver_name}
 Recipient: {request.recipient_name}
-Budget: {request.budget}
-Hobbies: {request.hobbies}
-Interests: {request.interests}
-Favorites: {request.favorites}
-Personality: {request.personality}
-Special Memory: {request.special_memory}
-Giver's Gift Idea: {request.giver_gift_idea}
-Why Meaningful: {request.why_meaningful}
+Budget: ₹{request.budget}
 
-Task:
-1. Reformat the giver's original idea ("{request.giver_gift_idea}") into proper JSON structure with enhanced description and reasoning based on why they chose it.
+WHO THEY ARE:
+{request.about_them}
 
-2. Generate 3 NEW alternative gift ideas that:
-   - Fit budget: {request.budget}
-   - Match personality: {request.personality}
-   - Connect to interests/hobbies
-   - Feel personal and thoughtful
-   - Are DIFFERENT from giver's idea but complementary
+A SPECIAL MEMORY:
+{request.special_memory}
+
+GIVER'S ORIGINAL IDEA:
+"{request.giver_gift_idea}"
+
+WHY IT MATTERS TO THEM:
+{request.why_meaningful}
+
+---
+
+TASK:
+1. First, deeply understand the EMOTIONAL CORE of their relationship from the memory and context
+2. Reinterpret the giver's idea with enhanced emotional depth (don't just repeat it)
+3. Generate 3 COMPLETELY DIFFERENT gift alternatives that:
+   - Connect to the deeper feelings in their story
+   - Are NOT obvious extensions of what they mentioned
+   - Show you understood what they didn't explicitly say
+   - Feel surprising yet perfect
+   - Stay within budget: ₹{request.budget}
    - Are available in India
 
-For ALL 4 gifts (1 reformatted + 3 new), return JSON array with:
-- title
-- description
-- why_it_works
-- personalization_tip
-- estimated_cost
-- category
+IMPORTANT:
+- DO NOT use phrases like "as mentioned" or "they said"
+- DO NOT list their interests back to them
+- INTERPRET the feelings, don't summarize the facts
+- Each gift should feel like you read between the lines
 
-Additionally, create 1 curated gift bundle/hamper that combines 3-5 compatible items into a complete experience.
+Also create ONE curated gift bundle combining 3-5 items into a complete emotional experience.
 
-Include:
-- bundle_name (creative, specific)
-- items_list (array of 3-5 items with item, cost, where fields - ALL AS STRINGS)
-- total_cost (as STRING like "₹2,500")
-- presentation_tips (how to package/arrange)
-- note_template (sample message user can personalize)
-- pro_tip (one extra touch)
+Bundle structure:
+- bundle_name: Evocative name
+- items_list: Array with item, cost, where (all strings)
+- total_cost: String like "₹2,500"
+- presentation_tips: How to arrange/present
+- note_template: Heartfelt message they can personalize
+- pro_tip: One meaningful extra touch
 
-Return this as JSON with structure: {{"gifts": [...], "bundle": {{...}}}}
+Return JSON: {{"gifts": [4 gifts], "bundle": {{...}}}}
 
-Make each gift distinct and meaningful. ALL NUMERIC VALUES MUST BE STRINGS. Return ONLY valid JSON, no markdown."""
+Be creative. Be insightful. Don't be repetitive."""
 
-        # Call Gemini API
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
-        # Parse response
         response_text = response.text.strip()
         
-        # Remove markdown code blocks if present
         if response_text.startswith('```json'):
             response_text = response_text[7:]
         if response_text.startswith('```'):
@@ -200,10 +187,8 @@ Make each gift distinct and meaningful. ALL NUMERIC VALUES MUST BE STRINGS. Retu
         
         response_text = response_text.strip()
         
-        # Parse JSON
         result = json.loads(response_text)
         
-        # Validate structure
         if 'gifts' not in result or not isinstance(result['gifts'], list):
             raise ValueError("Invalid response structure: missing 'gifts' array")
         
@@ -218,7 +203,6 @@ Make each gift distinct and meaningful. ALL NUMERIC VALUES MUST BE STRINGS. Retu
         raise HTTPException(status_code=500, detail=f"Failed to generate gift ideas: {str(e)}")
 
 
-# Include the router in the main app
 app.include_router(api_router)
 
 app.add_middleware(
@@ -229,7 +213,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
