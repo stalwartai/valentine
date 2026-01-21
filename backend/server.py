@@ -173,15 +173,15 @@ Additionally, create 1 curated gift bundle/hamper that combines 3-5 compatible i
 
 Include:
 - bundle_name (creative, specific)
-- items_list (array of 3-5 items with item, cost, where fields)
-- total_cost
+- items_list (array of 3-5 items with item, cost, where fields - ALL AS STRINGS)
+- total_cost (as STRING like "₹2,500")
 - presentation_tips (how to package/arrange)
 - note_template (sample message user can personalize)
 - pro_tip (one extra touch)
 
 Return this as JSON with structure: {{"gifts": [...], "bundle": {{...}}}}
 
-Make each gift distinct and meaningful. Return ONLY valid JSON, no markdown."""
+Make each gift distinct and meaningful. ALL NUMERIC VALUES MUST BE STRINGS. Return ONLY valid JSON, no markdown."""
 
         # Call Gemini API
         model = genai.GenerativeModel('gemini-2.5-flash')
