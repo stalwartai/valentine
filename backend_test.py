@@ -80,7 +80,7 @@ class ValentineGiftAPITester:
         print(f"\n📝 Test data summary:")
         print(f"   Giver: {test_data['giver_name']}")
         print(f"   Recipient: {test_data['recipient_name']}")
-        print(f"   Budget: {test_data['budget']}")
+        print(f"   Budget: ₹{test_data['budget']}")
         print(f"   Gift idea: {test_data['giver_gift_idea']}")
         
         success, response = self.run_test(
