@@ -70,11 +70,8 @@ class ValentineGiftAPITester:
         test_data = {
             "giver_name": "Alex",
             "recipient_name": "Sam",
-            "budget": "₹1,000 - ₹2,000",
-            "hobbies": "reading, painting, hiking, cooking",
-            "interests": "art museums, indie films, sustainable living",
-            "favorites": "handwritten letters, vintage books, cozy cafes",
-            "personality": "thoughtful, creative, introverted, caring",
+            "budget": "2000",
+            "about_them": "Sam is thoughtful, creative, and introverted. They love reading, painting, hiking, and cooking. They're passionate about art museums, indie films, and sustainable living. They have a soft spot for handwritten letters, vintage books, and cozy cafes.",
             "special_memory": "Our first date at the art museum where we spent hours discussing our favorite paintings and discovered we both love the same obscure artist.",
             "giver_gift_idea": "A custom art book featuring their favorite paintings",
             "why_meaningful": "They always talk about that first date and how art brings us together. This would be a physical reminder of our connection and their passion for art."
