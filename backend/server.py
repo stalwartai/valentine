@@ -183,7 +183,7 @@ Return this as JSON with structure: {{"gifts": [...], "bundle": {{...}}}}
 Make each gift distinct and meaningful. Return ONLY valid JSON, no markdown."""
 
         # Call Gemini API
-        model = genai.GenerativeModel('gemini-1.5-pro')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
         # Parse response
