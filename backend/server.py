@@ -173,7 +173,7 @@ Return JSON: {{"gifts": [4 gifts], "bundle": {{...}}}}
 
 Be creative. Be insightful. Don't be repetitive."""
 
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
         response_text = response.text.strip()
