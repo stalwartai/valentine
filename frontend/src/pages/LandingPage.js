@@ -34,11 +34,11 @@ export default function LandingPage() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-foreground leading-tight">
-              Find the Perfect Gift with AI
+              Turn Memories Into Perfect Gifts
             </h1>
             
             <p className="text-lg sm:text-xl text-muted-foreground font-body leading-relaxed">
-              See if AI can understand your partner as well as you do. Get 4 personalized gift ideas in minutes.
+              Share your story, and we'll help you find gifts that capture the depth of your feelings—not just their interests.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -110,7 +110,7 @@ export default function LandingPage() {
               How It Works
             </h2>
             <p className="text-lg text-muted-foreground font-body max-w-2xl mx-auto">
-              Three simple steps to discover the perfect gift
+              We analyze your memories and feelings to create deeply meaningful gift ideas
             </p>
           </motion.div>
           
@@ -118,22 +118,22 @@ export default function LandingPage() {
             {[
               {
                 number: "01",
-                title: "Share Your Story",
-                description: "Tell us about your partner—their hobbies, interests, personality, and your special memories together.",
+                title: "Share What Matters",
+                description: "Tell us about them and share a meaningful memory. We need the emotions behind your relationship, not just facts.",
                 icon: Heart,
                 delay: 0
               },
               {
                 number: "02",
-                title: "AI Generates Ideas",
-                description: "Our AI analyzes your relationship and creates 3 thoughtful gift alternatives to compare with your original idea.",
+                title: "AI Reads Between Lines",
+                description: "Our AI understands the deeper feelings in your story and generates gifts that honor your unique connection.",
                 icon: Sparkles,
                 delay: 0.2
               },
               {
                 number: "03",
-                title: "Choose & Perfect",
-                description: "Browse 4 personalized gift options and get actionable tips to make your chosen gift extra special.",
+                title: "Discover & Personalize",
+                description: "Get 4 emotionally resonant gift ideas plus specific tips to make each one unforgettable.",
                 icon: Gift,
                 delay: 0.4
               }
