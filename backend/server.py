@@ -123,7 +123,7 @@ For each gift, provide:
 2. description (what it is, 20-30 words)
 3. why_it_works (2-3 sentences connecting to their personality/interests/memories)
 4. personalization_tip (1 sentence on how to customize)
-5. estimated_cost (within budget, in INR)
+5. estimated_cost (within budget, as STRING format like "₹1,500" or "₹800-1,200")
 6. category (thoughtful/creative/experiential/practical/romantic)
 
 Guidelines:
@@ -133,6 +133,7 @@ Guidelines:
 - Connect to unique traits
 - Make actionable (user knows where/how to get it)
 - Tone: warm, sincere, encouraging
+- ALL FIELDS MUST BE STRINGS, especially estimated_cost
 
 Return as valid JSON only, no markdown formatting."""
 
