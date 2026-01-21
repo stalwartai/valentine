@@ -1,0 +1,186 @@
+{
+  "identity": {
+    "persona": "E1 - The Anti-AI Designer",
+    "principles": [
+      "Fusion over Imitation",
+      "Emotion First",
+      "Content is King",
+      "Zoom In",
+      "Negative Space",
+      "Contrast"
+    ]
+  },
+  "project_metadata": {
+    "name": "Valentine's Gift AI",
+    "type": "Hybrid (Landing Page + Web App)",
+    "tone": "Warm, Romantic, Modern, Magical, Inclusive",
+    "target_audience": "Couples, Gift Givers"
+  },
+  "design_system": {
+    "typography": {
+      "headings": {
+        "family": "Playfair Display, serif",
+        "weights": ["400", "600", "700"],
+        "usage": "Main headlines, section titles. Use tight tracking (-0.02em)."
+      },
+      "body": {
+        "family": "Manrope, sans-serif",
+        "weights": ["400", "500", "600"],
+        "usage": "Paragraphs, UI elements, form labels. Use relaxed line-height."
+      },
+      "import_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap"
+    },
+    "colors": {
+      "palette": {
+        "primary": {
+          "DEFAULT": "#FF4294",
+          "foreground": "#FFFFFF",
+          "description": "Deep Rose - Main CTA, Active States"
+        },
+        "secondary": {
+          "DEFAULT": "#FFB3BA",
+          "foreground": "#4A4244",
+          "description": "Soft Blush Pink - Secondary buttons, highlights"
+        },
+        "background": {
+          "DEFAULT": "#FEFDFD",
+          "alt": "#FFF5EE",
+          "description": "Cream/Ivory - Main background"
+        },
+        "foreground": {
+          "DEFAULT": "#4A4244",
+          "muted": "#8C8486",
+          "description": "Dark Warm Gray - Text (Corrected for contrast)"
+        },
+        "accent": {
+          "DEFAULT": "#FF6F61",
+          "foreground": "#FFFFFF",
+          "description": "Coral Pink - Notifications, Badges"
+        },
+        "muted": {
+          "DEFAULT": "#F2EFEA",
+          "foreground": "#8C8486",
+          "description": "Warm Gray - Borders, subtle backgrounds"
+        },
+        "card": {
+          "DEFAULT": "#FFFFFF",
+          "foreground": "#4A4244"
+        }
+      },
+      "gradients": {
+        "hero_overlay": "linear-gradient(180deg, rgba(254,253,253,0) 0%, #FEFDFD 100%)",
+        "romantic_glow": "radial-gradient(circle at 50% 50%, rgba(255,179,186,0.3) 0%, rgba(255,255,255,0) 70%)"
+      }
+    },
+    "visual_enhancers": {
+      "texture": {
+        "url": "https://images.pexels.com/photos/7598248/pexels-photo-7598248.jpeg",
+        "usage": "Overlay on background with opacity-20 mix-blend-multiply to create paper feel."
+      },
+      "shadows": {
+        "soft": "0 4px 20px -2px rgba(255, 66, 148, 0.1)",
+        "card": "0 10px 40px -10px rgba(74, 66, 68, 0.05)",
+        "glow": "0 0 20px rgba(255, 66, 148, 0.3)"
+      },
+      "border_radius": {
+        "button": "9999px",
+        "card": "1rem",
+        "input": "0.75rem"
+      }
+    }
+  },
+  "layout_strategy": {
+    "landing_page": {
+      "grid_mode": "Mode A: The Tetris Grid",
+      "description": "Asymmetric layout. Hero section uses large romantic imagery with overlapping text. 'How it Works' uses a zig-zag layout.",
+      "spacing": "Generous. Section padding py-24 or py-32."
+    },
+    "form_wizard": {
+      "mode": "Focused Single Column",
+      "description": "Centered container (max-w-xl). Clean white card on cream background. Progress bar at top. Smooth slide transitions between steps.",
+      "spacing": "Compact internal spacing (p-8), large external margins."
+    },
+    "results_page": {
+      "grid_mode": "Mode A: Bento Grid",
+      "description": "4 Cards. User's Original Idea (Col-span-2) vs 3 AI Alternatives. Bundle suggestion as a full-width banner.",
+      "spacing": "Gap-6 or Gap-8."
+    }
+  },
+  "components": {
+    "buttons": {
+      "style": "Pill-shaped. Primary: Deep Rose with shadow-glow. Secondary: Blush Pink outline.",
+      "animation": "Hover: scale-105 active:scale-95 transition-all duration-300"
+    },
+    "cards": {
+      "style": "Soft Card. White bg, 1px border-muted, shadow-card. Hover: border-primary/30 shadow-soft.",
+      "content_padding": "p-6 or p-8"
+    },
+    "inputs": {
+      "style": "Minimalist. Bg-white, border-muted. Focus: border-primary ring-2 ring-primary/20.",
+      "height": "h-12"
+    },
+    "progress_bar": {
+      "style": "Height 4px. Bg-muted. Indicator: Bg-primary with glowing end."
+    }
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.pexels.com/photos/17435006/pexels-photo-17435006.jpeg",
+        "description": "Romantic couple minimalist aesthetic",
+        "usage": "Hero section main visual"
+      },
+      {
+        "category": "gift_placeholder",
+        "url": "https://images.pexels.com/photos/5872362/pexels-photo-5872362.jpeg",
+        "description": "Minimalist gift box",
+        "usage": "Fallback for gift results"
+      },
+      {
+        "category": "texture_bg",
+        "url": "https://images.pexels.com/photos/7598248/pexels-photo-7598248.jpeg",
+        "description": "Cream paper texture",
+        "usage": "Global background overlay"
+      }
+    ],
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px. Color: Primary or Foreground."
+    }
+  },
+  "motion": {
+    "page_load": "Staggered fade-in-up (0.5s delay per element).",
+    "hover": "Lift (-4px) and Glow.",
+    "form_transition": "Slide-in-right / Slide-out-left.",
+    "loading_state": "Heartbeat animation (scale 1 -> 1.1 -> 1) infinite."
+  },
+  "accessibility": {
+    "contrast": "Ensure text #4A4244 on #FEFDFD meets WCAG AA.",
+    "focus_states": "Visible ring-2 ring-primary/50 on all interactive elements.",
+    "reduced_motion": "Respect prefers-reduced-motion media query."
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Install fonts (Manrope, Playfair Display) in index.css.",
+    "2. THEME: Update tailwind.config.js with the specific color palette provided. Do not use default shadcn colors.",
+    "3. GLOBAL CSS: Add the paper texture overlay to the body in index.css using ::before pseudo-element.",
+    "4. COMPONENTS: Customize shadcn components (Button, Input, Card) to match the 'Pill' and 'Soft Card' styles defined.",
+    "5. LAYOUT: Build the Landing Page using the 'Tetris Grid' principles. Do not just stack sections vertically.",
+    "6. FORM: Implement the 3-step wizard using 'framer-motion' for smooth transitions between steps.",
+    "7. RESULTS: Use the Bento Grid layout for the results. Highlight the 'Winner' (best option) visually.",
+    "8. TESTING: Add data-testid to all inputs and buttons."
+  ],
+  "universal_guidelines": [
+    "Avoid 'AI slop' aesthetic (generic centered layouts, gradients).",
+    "Create depth through layered design elements (z-index).",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "DO NOT apply universal transition (transition: all).",
+    "DO NOT center align the app container.",
+    "Every interaction needs micro-animations.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "Subtle grain textures and noise overlays are mandatory.",
+    "Use 'sonner' for toasts.",
+    "Components MUST use named exports.",
+    "Pages MUST use default exports."
+  ]
+}
