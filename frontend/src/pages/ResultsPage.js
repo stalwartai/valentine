@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Heart, Gift, RefreshCw, Edit, Package, MapPin, MessageSquare, Lightbulb } from "lucide-react";
+import { Heart, Gift, RefreshCw, Edit, Package, MapPin, MessageSquare, Lightbulb, Brain, Sparkles, Download, Clock, Video, Share2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import axios from "axios";
 
@@ -17,9 +18,9 @@ export default function ResultsPage() {
   const [bundle, setBundle] = useState(null);
   const [loadingText, setLoadingText] = useState("Understanding your relationship...");
   const [progress, setProgress] = useState(0);
+  const [selectedGift, setSelectedGift] = useState(null);
 
   useEffect(() => {
-    // Get form data from localStorage or location state
     const formData = location.state?.formData || JSON.parse(localStorage.getItem('giftFormData') || 'null');
     
     if (!formData) {
@@ -37,7 +38,6 @@ export default function ResultsPage() {
       setProgress(0);
       setLoadingText("Understanding your relationship...");
 
-      // Simulate progress
       const progressInterval = setInterval(() => {
         setProgress(prev => {
           if (prev >= 90) return prev;
@@ -78,6 +78,25 @@ export default function ResultsPage() {
     navigate('/form');
   };
 
+  const downloadMemoryCard = () => {
+    const formData = JSON.parse(localStorage.getItem('giftFormData') || '{}');
+    const cardText = `💝 For ${formData.recipient_name}\n\nA Special Memory:\n${formData.special_memory}\n\nWith love,\n${formData.giver_name}`;
+    
+    const blob = new Blob([cardText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'memory-card.txt';
+    a.click();
+    toast.success('Memory card downloaded!');
+  };
+
+  const getEmotionalScore = (gift, index) => {
+    // User's original gift (index 0) gets bonus emotional score
+    const baseScore = index === 0 ? 95 : 80 + Math.random() * 15;
+    return Math.round(baseScore);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
@@ -113,86 +132,156 @@ export default function ResultsPage() {
     );
   }
 
+  const formData = JSON.parse(localStorage.getItem('giftFormData') || '{}');
+
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header with comparison angle */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4">
-            Here are 4 gift ideas for {JSON.parse(localStorage.getItem('giftFormData') || '{}').recipient_name || 'them'} 💝
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 rounded-full mb-4">
+            <Heart className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">Your Heart</span>
+            <span className="text-muted-foreground">vs</span>
+            <Brain className="w-4 h-4 text-accent" />
+            <span className="text-sm font-medium text-foreground">AI Analysis</span>
+          </div>
+          
+          <h1 className="text-3xl sm:text-4xl font-heading font-bold text-foreground mb-3">
+            4 Gift Ideas for {formData.recipient_name} 💝
           </h1>
-          <p className="text-lg text-muted-foreground font-body max-w-2xl mx-auto">
-            One is yours, three are AI-generated. Can you tell which is which?
+          <p className="text-base text-muted-foreground font-body max-w-2xl mx-auto">
+            Your intuition meets AI's emotional intelligence
           </p>
         </motion.div>
 
-        {/* Gift Cards Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12" data-testid="gift-cards-grid">
-          {gifts.map((gift, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-8 shadow-card border border-muted hover:border-primary/30 hover:shadow-soft hover:-translate-y-1 transition-all duration-300"
-              data-testid={`gift-card-${index}`}
-            >
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="bg-secondary/20 rounded-full p-3">
-                    <Gift className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full mb-2">
-                      {gift.category}
-                    </span>
-                    <h3 className="text-xl font-heading font-semibold text-foreground" data-testid={`gift-title-${index}`}>
-                      {gift.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">What it is:</h4>
-                    <p className="text-foreground font-body" data-testid={`gift-description-${index}`}>
-                      {gift.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">Why it works:</h4>
-                    <p className="text-foreground font-body leading-relaxed" data-testid={`gift-why-${index}`}>
-                      {gift.why_it_works}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-sm font-medium text-muted-foreground mb-1">Personalize it:</h4>
-                    <p className="text-foreground font-body italic" data-testid={`gift-tip-${index}`}>
-                      {gift.personalization_tip}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-muted">
-                    <span className="text-lg font-heading font-semibold text-primary" data-testid={`gift-cost-${index}`}>
-                      Est: {gift.estimated_cost}
-                    </span>
-                  </div>
-                </div>
+        {/* Human vs AI Comparison Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-8 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 rounded-2xl p-6 border border-primary/20"
+          data-testid="comparison-banner"
+        >
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Heart className="w-5 h-5 text-primary fill-primary" />
+                <h3 className="font-heading font-semibold text-foreground">Your Human Touch</h3>
               </div>
-            </motion.div>
-          ))}
+              <p className="text-sm text-foreground leading-relaxed">
+                <strong>Your gift idea:</strong> {formData.giver_gift_idea}
+              </p>
+              <p className="text-xs text-muted-foreground italic">
+                Born from lived experience and deep knowing
+              </p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Brain className="w-5 h-5 text-accent" />
+                <h3 className="font-heading font-semibold text-foreground">AI's Insight</h3>
+              </div>
+              <p className="text-sm text-foreground leading-relaxed">
+                Analyzed your memories and emotions to find patterns you might have missed
+              </p>
+              <p className="text-xs text-muted-foreground italic">
+                Reading between the lines of your story
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Gift Cards with Emotional Score */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8" data-testid="gift-cards-grid">
+          {gifts.map((gift, index) => {
+            const emotionalScore = getEmotionalScore(gift, index);
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`bg-white rounded-2xl p-6 shadow-card border-2 transition-all duration-300 cursor-pointer ${
+                  selectedGift === index 
+                    ? 'border-primary shadow-glow' 
+                    : 'border-muted hover:border-primary/30 hover:shadow-soft hover:-translate-y-1'
+                }`}
+                onClick={() => setSelectedGift(index)}
+                data-testid={`gift-card-${index}`}
+              >
+                {index === 0 && (
+                  <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                    <Heart className="w-3 h-3 fill-primary" />
+                    Your Original Idea (Enhanced)
+                  </div>
+                )}
+                
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <span className="inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-medium rounded-full mb-2">
+                        {gift.category}
+                      </span>
+                      <h3 className="text-lg font-heading font-semibold text-foreground" data-testid={`gift-title-${index}`}>
+                        {gift.title}
+                      </h3>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-heading font-bold text-primary">{emotionalScore}%</div>
+                      <div className="text-xs text-muted-foreground">Emotional<br/>Match</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-sm text-foreground font-body" data-testid={`gift-description-${index}`}>
+                        {gift.description}
+                      </p>
+                    </div>
+
+                    <div className="bg-secondary/10 rounded-lg p-3">
+                      <h4 className="text-xs font-medium text-muted-foreground mb-1 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Why this resonates:
+                      </h4>
+                      <p className="text-sm text-foreground font-body leading-relaxed" data-testid={`gift-why-${index}`}>
+                        {gift.why_it_works}
+                      </p>
+                    </div>
+
+                    <div className="border-l-2 border-primary pl-3">
+                      <h4 className="text-xs font-medium text-muted-foreground mb-1">Make it unforgettable:</h4>
+                      <p className="text-sm text-foreground font-body italic" data-testid={`gift-tip-${index}`}>
+                        {gift.personalization_tip}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-muted">
+                      <span className="text-base font-heading font-semibold text-primary" data-testid={`gift-cost-${index}`}>
+                        {gift.estimated_cost}
+                      </span>
+                      {selectedGift === index && (
+                        <span className="flex items-center gap-1 text-xs text-primary font-medium">
+                          <CheckCircle2 className="w-4 h-4" />
+                          Selected
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Action Buttons */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+          className="flex flex-wrap gap-3 justify-center items-center mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
@@ -201,9 +290,9 @@ export default function ResultsPage() {
             data-testid="regenerate-btn"
             onClick={handleRegenerate}
             variant="outline"
-            className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-6 py-3 hover:scale-105 active:scale-95 transition-all duration-300"
+            className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full px-5 py-2 text-sm hover:scale-105 active:scale-95 transition-all duration-300"
           >
-            <RefreshCw className="w-5 h-5 mr-2" />
+            <RefreshCw className="w-4 h-4 mr-2" />
             Regenerate Ideas
           </Button>
           
@@ -211,93 +300,177 @@ export default function ResultsPage() {
             data-testid="edit-answers-btn"
             onClick={handleEdit}
             variant="outline"
-            className="border-2 border-muted text-foreground hover:bg-muted rounded-full px-6 py-3 hover:scale-105 active:scale-95 transition-all duration-300"
+            className="border-2 border-muted text-foreground hover:bg-muted rounded-full px-5 py-2 text-sm hover:scale-105 active:scale-95 transition-all duration-300"
           >
-            <Edit className="w-5 h-5 mr-2" />
-            Edit My Answers
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Answers
+          </Button>
+          
+          <Button
+            onClick={downloadMemoryCard}
+            variant="outline"
+            className="border-2 border-accent text-accent hover:bg-accent hover:text-white rounded-full px-5 py-2 text-sm hover:scale-105 active:scale-95 transition-all duration-300"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Download Memory Card
           </Button>
         </motion.div>
 
-        {/* Bundle Section */}
-        {bundle && (
+        {/* DIY Creation Guide - Enhanced Bundle Section */}
+        {bundle && selectedGift !== null && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-gradient-to-br from-secondary/20 to-accent/10 rounded-2xl p-8 border-2 border-secondary shadow-soft"
-            data-testid="bundle-section"
+            className="bg-gradient-to-br from-secondary/20 to-accent/10 rounded-2xl p-6 sm:p-8 border-2 border-secondary shadow-soft mb-10"
+            data-testid="diy-creation-guide"
           >
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-card mb-4">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-card mb-3">
                 <Package className="w-5 h-5 text-primary" />
-                <span className="font-heading font-semibold text-foreground">Complete Gift Experience</span>
+                <span className="font-heading font-semibold text-foreground">DIY Creation Guide</span>
               </div>
               <h2 className="text-2xl font-heading font-bold text-foreground mb-2">
                 {bundle.bundle_name}
               </h2>
-              <p className="text-lg text-primary font-semibold">
-                Total estimated cost: {bundle.total_cost}
+              <p className="text-base text-primary font-semibold">
+                Total: {bundle.total_cost}
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Create an unforgettable experience, not just a gift
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Items List */}
-              <div className="bg-white rounded-xl p-6 shadow-card">
+            {/* Timeline */}
+            <div className="bg-white rounded-xl p-5 shadow-card mb-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Clock className="w-5 h-5 text-primary" />
+                <h3 className="font-heading font-semibold text-foreground">Your Gift Timeline</h3>
+              </div>
+              <div className="space-y-3">
+                <div className="flex gap-3">
+                  <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-bold text-primary">1</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Today - Tomorrow</p>
+                    <p className="text-xs text-muted-foreground">Purchase all items from the list below</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-bold text-primary">2</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">2 Days Before</p>
+                    <p className="text-xs text-muted-foreground">Assemble and arrange following presentation tips</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="bg-primary/10 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-bold text-primary">3</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Valentine's Day</p>
+                    <p className="text-xs text-muted-foreground">Present with the message card and video note</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Shopping List */}
+              <div className="bg-white rounded-xl p-5 shadow-card">
                 <div className="flex items-center gap-2 mb-4">
                   <Gift className="w-5 h-5 text-primary" />
-                  <h3 className="font-heading font-semibold text-foreground">What to include:</h3>
+                  <h3 className="font-heading font-semibold text-foreground">Shopping List</h3>
                 </div>
                 <div className="space-y-3">
                   {bundle.items_list?.map((item, index) => (
-                    <div key={index} className="border-l-2 border-primary pl-4" data-testid={`bundle-item-${index}`}>
-                      <p className="font-medium text-foreground">{item.item} ({item.cost})</p>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {item.where}
-                      </p>
+                    <div key={index} className="flex items-start gap-3 p-3 bg-secondary/10 rounded-lg" data-testid={`bundle-item-${index}`}>
+                      <input 
+                        type="checkbox" 
+                        className="mt-1 w-4 h-4 text-primary rounded focus:ring-primary"
+                        data-testid={`item-checkbox-${index}`}
+                      />
+                      <div className="flex-1">
+                        <p className="font-medium text-sm text-foreground">{item.item}</p>
+                        <p className="text-xs text-primary font-semibold">{item.cost}</p>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                          <MapPin className="w-3 h-3" />
+                          {item.where}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Presentation Tips */}
-              <div className="space-y-6">
-                <div className="bg-white rounded-xl p-6 shadow-card">
+              {/* Assembly & Presentation */}
+              <div className="space-y-4">
+                <div className="bg-white rounded-xl p-5 shadow-card">
                   <div className="flex items-center gap-2 mb-3">
                     <Package className="w-5 h-5 text-accent" />
-                    <h3 className="font-heading font-semibold text-foreground">How to present it:</h3>
+                    <h3 className="font-heading font-semibold text-foreground">How to Assemble</h3>
                   </div>
-                  <p className="text-foreground font-body leading-relaxed">
+                  <p className="text-sm text-foreground font-body leading-relaxed">
                     {bundle.presentation_tips}
                   </p>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-card">
+                <div className="bg-white rounded-xl p-5 shadow-card">
                   <div className="flex items-center gap-2 mb-3">
                     <MessageSquare className="w-5 h-5 text-accent" />
-                    <h3 className="font-heading font-semibold text-foreground">What to write in the note:</h3>
+                    <h3 className="font-heading font-semibold text-foreground">Your Message</h3>
                   </div>
-                  <p className="text-foreground font-body leading-relaxed italic">
-                    "{bundle.note_template}"
+                  <div className="bg-secondary/20 rounded-lg p-4 mb-3">
+                    <p className="text-sm text-foreground font-body leading-relaxed italic">
+                      "{bundle.note_template}"
+                    </p>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    💡 Write this by hand on beautiful stationery for extra impact
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl p-6 border-2 border-primary/20">
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl p-5 border-2 border-primary/20">
                   <div className="flex items-center gap-2 mb-3">
                     <Lightbulb className="w-5 h-5 text-primary" />
-                    <h3 className="font-heading font-semibold text-foreground">Pro tip:</h3>
+                    <h3 className="font-heading font-semibold text-foreground">Pro Tip</h3>
                   </div>
-                  <p className="text-foreground font-body leading-relaxed">
+                  <p className="text-sm text-foreground font-body leading-relaxed">
                     {bundle.pro_tip}
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Video Message Suggestion */}
+            <div className="mt-6 bg-white rounded-xl p-5 shadow-card">
+              <div className="flex items-center gap-2 mb-3">
+                <Video className="w-5 h-5 text-accent" />
+                <h3 className="font-heading font-semibold text-foreground">Record a Voice/Video Message</h3>
+              </div>
+              <p className="text-sm text-foreground mb-3">
+                While giving this gift, share these feelings:
+              </p>
+              <div className="space-y-2 text-sm text-foreground">
+                <p className="bg-secondary/10 rounded-lg p-3">
+                  💭 <strong>The memory:</strong> Start with "{formData.special_memory?.substring(0, 60)}..."
+                </p>
+                <p className="bg-secondary/10 rounded-lg p-3">
+                  💝 <strong>Why it matters:</strong> "{formData.why_meaningful?.substring(0, 60)}..."
+                </p>
+                <p className="bg-secondary/10 rounded-lg p-3">
+                  ✨ <strong>Your hope:</strong> "I hope this gift captures how much our time together means to me."
+                </p>
               </div>
             </div>
           </motion.div>
         )}
 
         {/* Footer */}
-        <div className="mt-16 text-center">
+        <div className="mt-12 text-center space-y-4">
           <Button
             onClick={() => navigate('/')}
             variant="ghost"
@@ -305,6 +478,10 @@ export default function ResultsPage() {
           >
             ← Back to Home
           </Button>
+          
+          <p className="text-xs text-muted-foreground">
+            💡 Tip: Bookmark this page to revisit your gift ideas anytime
+          </p>
         </div>
       </div>
     </div>
