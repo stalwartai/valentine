@@ -154,11 +154,15 @@ What I need:
 
 3. Create a complete gift bundle idea (combining 3-5 small items)
 
-IMPORTANT about the JSON:
-- items_list in bundle MUST be an array of objects like: [{{"item": "name", "cost": "₹500", "where": "shop name"}}]
-- NOT strings, actual JSON objects
+CRITICAL - Bundle MUST have ALL these fields:
+- bundle_name: string (name of the bundle)
+- items_list: array of objects [{{"item": "name", "cost": "₹500", "where": "shop"}}]
+- total_cost: string (like "₹2,500")
+- presentation_tips: string (how to arrange/present it)
+- note_template: string (message they can write)
+- pro_tip: string (one extra special touch)
 
-Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list": [...], ...}}}}
+Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list": [...], "total_cost": "...", "presentation_tips": "...", "note_template": "...", "pro_tip": "..."}}}}
 
 Keep it natural and helpful, not overly fancy."""
 
