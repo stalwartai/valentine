@@ -163,10 +163,18 @@ Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list
 Keep it natural and helpful, not overly fancy."""
 
         model = genai.GenerativeModel('gemini-2.5-flash')
+        
+        logging.info("Calling Gemini API...")
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
-        response_text = response.text.strip()
+        if not response or not response.text:
+            logging.error("Empty response from Gemini API")
+            raise ValueError("AI returned empty response")
         
+        response_text = response.text.strip()
+        logging.info(f"Raw AI response (first 200 chars): {response_text[:200]}")
+        
+        # Remove markdown code fences
         if response_text.startswith('```json'):
             response_text = response_text[7:]
         if response_text.startswith('```'):
@@ -176,19 +184,37 @@ Keep it natural and helpful, not overly fancy."""
         
         response_text = response_text.strip()
         
-        result = json.loads(response_text)
+        if not response_text:
+            logging.error("Response text is empty after cleaning")
+            raise ValueError("AI response is empty after cleaning markdown")
         
+        # Try to parse JSON
+        try:
+            result = json.loads(response_text)
+        except json.JSONDecodeError as json_err:
+            logging.error(f"JSON decode failed: {json_err}")
+            logging.error(f"Full response text: {response_text}")
+            raise
+        
+        # Validate structure
         if 'gifts' not in result or not isinstance(result['gifts'], list):
+            logging.error(f"Invalid structure - missing gifts array. Keys: {result.keys()}")
             raise ValueError("Invalid response structure: missing 'gifts' array")
         
+        if len(result['gifts']) == 0:
+            logging.error("Gifts array is empty")
+            raise ValueError("AI returned empty gifts array")
+        
+        logging.info(f"Successfully parsed {len(result['gifts'])} gifts")
         return GiftResponse(**result)
         
     except json.JSONDecodeError as e:
         logging.error(f"JSON parsing error: {e}")
-        logging.error(f"Response text: {response_text}")
         raise HTTPException(status_code=500, detail=f"Failed to parse AI response: {str(e)}")
     except Exception as e:
-        logging.error(f"Error generating gifts: {e}")
+        logging.error(f"Error generating gifts: {type(e).__name__}: {e}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=f"Failed to generate gift ideas: {str(e)}")
 
 
