@@ -125,55 +125,42 @@ For the bundle, items_list MUST be an array of objects with this exact structure
 
 Return only valid JSON. Keep language simple and friendly."""
 
-        user_prompt = f"""RELATIONSHIP CONTEXT:
-Giver: {request.giver_name}
-Recipient: {request.recipient_name}
+        user_prompt = f"""About this gift:
+
+Who it's for: {request.recipient_name}
+From: {request.giver_name}
 Budget: ₹{request.budget}
 
-WHO THEY ARE:
+About {request.recipient_name}:
 {request.about_them}
 
-A SPECIAL MEMORY:
+A memory that matters:
 {request.special_memory}
 
-GIVER'S ORIGINAL IDEA:
-"{request.giver_gift_idea}"
-
-WHY IT MATTERS TO THEM:
-{request.why_meaningful}
+{request.giver_name}'s original gift idea: {request.giver_gift_idea}
+Why they thought of this: {request.why_meaningful}
 
 ---
 
-TASK:
-1. First, deeply understand the EMOTIONAL CORE of their relationship from the memory and context
-2. Reinterpret the giver's idea with enhanced emotional depth (don't just repeat it)
-3. Generate 3 COMPLETELY DIFFERENT gift alternatives that:
-   - Connect to the deeper feelings in their story
-   - Are NOT obvious extensions of what they mentioned
-   - Show you understood what they didn't explicitly say
-   - Feel surprising yet perfect
-   - Stay within budget: ₹{request.budget}
-   - Are available in India
+What I need:
 
-IMPORTANT:
-- DO NOT use phrases like "as mentioned" or "they said"
-- DO NOT list their interests back to them
-- INTERPRET the feelings, don't summarize the facts
-- Each gift should feel like you read between the lines
+1. Take {request.giver_name}'s idea ("{request.giver_gift_idea}") and make it better - add details, make it more special
 
-Also create ONE curated gift bundle combining 3-5 items into a complete emotional experience.
+2. Come up with 3 completely different gift ideas that:
+   - Connect to what makes their relationship unique
+   - Aren't obvious (surprise them with how well you got it)
+   - Cost around ₹{request.budget} or less
+   - Are actually available in India
 
-Bundle structure:
-- bundle_name: Evocative name
-- items_list: Array with item, cost, where (all strings)
-- total_cost: String like "₹2,500"
-- presentation_tips: How to arrange/present
-- note_template: Heartfelt message they can personalize
-- pro_tip: One meaningful extra touch
+3. Create a complete gift bundle idea (combining 3-5 small items)
 
-Return JSON: {{"gifts": [4 gifts], "bundle": {{...}}}}
+IMPORTANT about the JSON:
+- items_list in bundle MUST be an array of objects like: [{{"item": "name", "cost": "₹500", "where": "shop name"}}]
+- NOT strings, actual JSON objects
 
-Be creative. Be insightful. Don't be repetitive."""
+Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list": [...], ...}}}}
+
+Keep it natural and helpful, not overly fancy."""
 
         model = genai.GenerativeModel('gemini-3-flash-preview')
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
