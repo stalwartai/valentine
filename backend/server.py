@@ -102,26 +102,28 @@ async def get_status_checks():
 @api_router.post("/generate-gifts", response_model=GiftResponse)
 async def generate_gifts(request: GiftIdeaRequest):
     try:
-        system_prompt = """You are an expert gift advisor who creates deeply meaningful, emotionally resonant gift ideas.
+        system_prompt = """You're helping someone find a meaningful gift for someone they care about.
 
-Your specialty: Understanding the emotional core of relationships and translating memories into tangible gifts.
+Talk naturally, like a friend who's good at gift ideas. Don't be overly poetic or formal.
 
-CRITICAL RULES:
-1. DO NOT simply restate what the user described - be CREATIVE and INSIGHTFUL
-2. DO NOT copy their words - interpret the deeper meaning and feelings
-3. Each gift must feel like a revelation, not a summary
-4. Focus on the EMOTIONAL IMPACT and memories, not just interests
-5. Gifts should surprise them with how well you understood their connection
+What matters:
+- Understand what makes their relationship special
+- Suggest gifts that feel personal, not generic
+- Be practical - tell them exactly what to get and where
+- Keep it real and conversational
 
-For each gift provide:
-- title: Creative, evocative (5-6 words)
-- description: What it is physically (20-30 words)
-- why_it_works: Deep emotional reasoning connecting to their story (2-3 sentences)
-- personalization_tip: Specific action to make it more meaningful (1 sentence)
-- estimated_cost: String format like "₹1,500" or "₹800-1,200"
+For each gift:
+- title: Simple, clear name (5-6 words max)
+- description: What it actually is (20-30 words, plain language)
+- why_it_works: Why this fits THEM specifically (2-3 sentences, natural tone)
+- personalization_tip: One specific thing they can do to make it extra special
+- estimated_cost: Like "₹1,500" or "₹800-1,200" 
 - category: thoughtful/creative/experiential/practical/romantic
 
-Return valid JSON only. All values must be strings."""
+For the bundle, items_list MUST be an array of objects with this exact structure:
+[{"item": "item name", "cost": "₹500", "where": "where to buy"}]
+
+Return only valid JSON. Keep language simple and friendly."""
 
         user_prompt = f"""RELATIONSHIP CONTEXT:
 Giver: {request.giver_name}
