@@ -174,26 +174,51 @@ Keep it natural and helpful, not overly fancy."""
         response_text = response.text.strip()
         logging.info(f"Raw AI response (first 200 chars): {response_text[:200]}")
         
-        # Remove markdown code fences
-        if response_text.startswith('```json'):
-            response_text = response_text[7:]
-        if response_text.startswith('```'):
-            response_text = response_text[3:]
-        if response_text.endswith('```'):
-            response_text = response_text[:-3]
+        # Extract JSON from response - AI might add extra text
+        json_start = -1
+        json_end = -1
         
-        response_text = response_text.strip()
+        # Look for JSON block markers
+        if '```json' in response_text:
+            json_start = response_text.find('```json') + 7
+            json_end = response_text.find('```', json_start)
+        elif '```' in response_text:
+            json_start = response_text.find('```') + 3
+            json_end = response_text.find('```', json_start)
+        
+        # If no code blocks, try to find JSON by { and }
+        if json_start == -1:
+            json_start = response_text.find('{')
+            if json_start != -1:
+                # Find matching closing brace
+                brace_count = 0
+                for i in range(json_start, len(response_text)):
+                    if response_text[i] == '{':
+                        brace_count += 1
+                    elif response_text[i] == '}':
+                        brace_count -= 1
+                        if brace_count == 0:
+                            json_end = i + 1
+                            break
+        
+        if json_start == -1 or json_end == -1:
+            logging.error("Could not find JSON in response")
+            logging.error(f"Full response: {response_text}")
+            raise ValueError("AI response does not contain valid JSON")
+        
+        response_text = response_text[json_start:json_end].strip()
+        logging.info(f"Extracted JSON (first 200 chars): {response_text[:200]}")
         
         if not response_text:
-            logging.error("Response text is empty after cleaning")
-            raise ValueError("AI response is empty after cleaning markdown")
+            logging.error("Response text is empty after extraction")
+            raise ValueError("AI response is empty after extracting JSON")
         
         # Try to parse JSON
         try:
             result = json.loads(response_text)
         except json.JSONDecodeError as json_err:
             logging.error(f"JSON decode failed: {json_err}")
-            logging.error(f"Full response text: {response_text}")
+            logging.error(f"Full extracted text: {response_text[:500]}")
             raise
         
         # Validate structure
