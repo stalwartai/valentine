@@ -162,7 +162,7 @@ Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list
 
 Keep it natural and helpful, not overly fancy."""
 
-        model = genai.GenerativeModel('gemini-3-flash-preview')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
         response_text = response.text.strip()
