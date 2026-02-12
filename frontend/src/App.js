@@ -1,6 +1,6 @@
 import React from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NewLandingPage from "./pages/NewLandingPage";
 import FormPage from "./pages/FormPage";
 import ResultsPagePhase1 from "./pages/ResultsPagePhase1";
@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NewLandingPage />} />
           <Route path="/form" element={<FormPage />} />
+          <Route path="/create-gift" element={<Navigate to="/form" replace />} />
           <Route path="/results" element={<ResultsPagePhase1 />} />
         </Routes>
       </BrowserRouter>
