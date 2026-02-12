@@ -153,26 +153,34 @@ module.exports = {
         'gradient-hero': "var(--gradient-hero)",
         'gradient-dreamy': "var(--gradient-dreamy)",
         'gradient-cta': "var(--gradient-cta)",
+        'gradient-deep-love': "var(--gradient-deep-love)",
+        'gradient-passion': "var(--gradient-passion)",
         'gradient-soft-glow': "var(--gradient-soft-glow)",
         'gradient-warm-overlay': "var(--gradient-warm-overlay)",
         'gradient-glass': "var(--gradient-glass)",
       },
       
       animation: {
-        'heartbeat': 'heartbeat 1.5s ease-in-out infinite',
+        'heartbeat': 'heartbeat 1.2s ease-in-out infinite',
         'fade-in-up': 'fade-in-up 0.6s ease-out',
         'slide-in-right': 'slide-in-right 0.5s ease-out',
         'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
         'float-heart': 'float-heart 4s ease-in-out infinite',
         'float-heart-delayed': 'float-heart 5s ease-in-out infinite 1s',
         'float-heart-slow': 'float-heart 6s ease-in-out infinite 2s',
-        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2.5s ease-in-out infinite',
+        'reveal-up': 'reveal-up 0.8s ease-out forwards',
+        'reveal-left': 'reveal-left 0.8s ease-out forwards',
+        'reveal-right': 'reveal-right 0.8s ease-out forwards',
+        'reveal-scale': 'reveal-scale 0.6s ease-out forwards',
       },
       
       keyframes: {
         'heartbeat': {
           '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.08)' },
+          '25%': { transform: 'scale(1.1)' },
+          '50%': { transform: 'scale(1)' },
+          '75%': { transform: 'scale(1.15)' },
         },
         'fade-in-up': {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
@@ -189,20 +197,36 @@ module.exports = {
         'float-heart': {
           '0%, 100%': { 
             transform: 'translateY(0) rotate(0deg)',
-            opacity: '0.6'
+            opacity: '0.7'
           },
           '50%': { 
-            transform: 'translateY(-20px) rotate(10deg)',
+            transform: 'translateY(-25px) rotate(12deg)',
             opacity: '1'
           },
         },
         'pulse-glow': {
           '0%, 100%': { 
-            boxShadow: '0 0 20px rgba(255, 111, 97, 0.4)' 
+            boxShadow: '0 0 20px rgba(196, 30, 58, 0.4)' 
           },
           '50%': { 
-            boxShadow: '0 0 40px rgba(255, 111, 97, 0.6), 0 0 60px rgba(255, 111, 97, 0.3)' 
+            boxShadow: '0 0 50px rgba(196, 30, 58, 0.7), 0 0 80px rgba(220, 20, 60, 0.4)' 
           },
+        },
+        'reveal-up': {
+          '0%': { opacity: '0', transform: 'translateY(60px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'reveal-left': {
+          '0%': { opacity: '0', transform: 'translateX(-60px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'reveal-right': {
+          '0%': { opacity: '0', transform: 'translateX(60px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'reveal-scale': {
+          '0%': { opacity: '0', transform: 'scale(0.8)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },
     },
