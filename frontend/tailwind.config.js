@@ -5,11 +5,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "rgb(var(--neutral-300))",
-        input: "rgb(var(--neutral-200))",
-        ring: "rgb(var(--primary-500))",
-        background: "rgb(var(--neutral-50))",
-        foreground: "rgb(var(--neutral-900))",
+        border: "var(--neutral-300)",
+        input: "var(--neutral-200)",
+        ring: "var(--accent-500)",
+        background: "var(--neutral-50)",
+        foreground: "var(--neutral-900)",
+        
+        // Valentine's Colors
+        blush: "var(--blush-pink)",
+        coral: "var(--coral-pink)",
+        cream: "var(--cream)",
         
         primary: {
           50: "var(--primary-50)",
@@ -22,8 +27,8 @@ module.exports = {
           700: "var(--primary-700)",
           800: "var(--primary-800)",
           900: "var(--primary-900)",
-          DEFAULT: "var(--primary-500)",
-          foreground: "#FFFFFF",
+          DEFAULT: "var(--primary-300)",
+          foreground: "var(--neutral-900)",
         },
         
         secondary: {
@@ -37,8 +42,8 @@ module.exports = {
           700: "var(--secondary-700)",
           800: "var(--secondary-800)",
           900: "var(--secondary-900)",
-          DEFAULT: "var(--secondary-500)",
-          foreground: "#FFFFFF",
+          DEFAULT: "var(--secondary-300)",
+          foreground: "var(--neutral-900)",
         },
         
         accent: {
@@ -109,8 +114,8 @@ module.exports = {
       },
       
       fontFamily: {
-        heading: ['Playfair Display', 'serif'],
-        body: ['Manrope', 'sans-serif'],
+        heading: ['Poppins', 'DM Sans', 'sans-serif'],
+        body: ['Inter', 'DM Sans', 'sans-serif'],
       },
       
       borderRadius: {
@@ -129,8 +134,10 @@ module.exports = {
         'lg': "var(--shadow-lg)",
         'xl': "var(--shadow-xl)",
         '2xl': "var(--shadow-2xl)",
+        'card': "var(--shadow-card)",
+        'card-hover': "var(--shadow-card-hover)",
         'glow-primary': "var(--glow-primary)",
-        'glow-secondary': "var(--glow-secondary)",
+        'glow-cta': "var(--glow-cta)",
         'glow-accent': "var(--glow-accent)",
         'glass': "var(--glass-shadow)",
       },
@@ -138,7 +145,9 @@ module.exports = {
       backgroundImage: {
         'gradient-romance': "var(--gradient-romance)",
         'gradient-sunset': "var(--gradient-sunset)",
+        'gradient-hero': "var(--gradient-hero)",
         'gradient-dreamy': "var(--gradient-dreamy)",
+        'gradient-cta': "var(--gradient-cta)",
         'gradient-soft-glow': "var(--gradient-soft-glow)",
         'gradient-warm-overlay': "var(--gradient-warm-overlay)",
         'gradient-glass': "var(--gradient-glass)",
@@ -149,8 +158,10 @@ module.exports = {
         'fade-in-up': 'fade-in-up 0.6s ease-out',
         'slide-in-right': 'slide-in-right 0.5s ease-out',
         'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
-        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-        'mesh-shift': 'meshShift 20s ease-in-out infinite',
+        'float-heart': 'float-heart 4s ease-in-out infinite',
+        'float-heart-delayed': 'float-heart 5s ease-in-out infinite 1s',
+        'float-heart-slow': 'float-heart 6s ease-in-out infinite 2s',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
       },
       
       keyframes: {
@@ -170,18 +181,22 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
-        'glow-pulse': {
-          '0%, 100%': { boxShadow: 'var(--glow-primary)' },
-          '50%': { boxShadow: '0 0 40px rgba(230, 83, 127, 0.6), 0 0 80px rgba(230, 83, 127, 0.3)' },
-        },
-        'meshShift': {
+        'float-heart': {
           '0%, 100%': { 
-            opacity: '1',
-            transform: 'scale(1) rotate(0deg)'
+            transform: 'translateY(0) rotate(0deg)',
+            opacity: '0.6'
           },
           '50%': { 
-            opacity: '0.8',
-            transform: 'scale(1.05) rotate(2deg)'
+            transform: 'translateY(-20px) rotate(10deg)',
+            opacity: '1'
+          },
+        },
+        'pulse-glow': {
+          '0%, 100%': { 
+            boxShadow: '0 0 20px rgba(255, 111, 97, 0.4)' 
+          },
+          '50%': { 
+            boxShadow: '0 0 40px rgba(255, 111, 97, 0.6), 0 0 60px rgba(255, 111, 97, 0.3)' 
           },
         },
       },
