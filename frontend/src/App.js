@@ -1,9 +1,9 @@
 import React from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import NewLandingPage from "./pages/NewLandingPage";
 import FormPage from "./pages/FormPage";
-import ResultsPage from "./pages/ResultsPage";
+import ResultsPagePhase1 from "./pages/ResultsPagePhase1";
 import { Toaster } from "sonner";
 
 function App() {
@@ -11,9 +11,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<NewLandingPage />} />
           <Route path="/form" element={<FormPage />} />
-          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/results" element={<ResultsPagePhase1 />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" richColors />
