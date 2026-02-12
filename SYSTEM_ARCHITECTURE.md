@@ -120,9 +120,9 @@
 
 ### Base Configuration
 
-**Backend URL:** `https://heartsinsight.preview.emergentagent.com`  
+**Backend URL:** `https://memory-gifts.preview.emergentagent.com`  
 **API Prefix:** `/api`  
-**Full API Base:** `https://heartsinsight.preview.emergentagent.com/api`
+**Full API Base:** `https://memory-gifts.preview.emergentagent.com/api`
 
 ### Environment Variables
 
@@ -136,7 +136,7 @@ GEMINI_API_KEY="AIzaSyDUgPqq7vKDLUumXpklXTUYUDjVun0-PY8"
 
 #### Frontend (`.env`)
 ```bash
-REACT_APP_BACKEND_URL=https://heartsinsight.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://memory-gifts.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 ENABLE_HEALTH_CHECK=false
 ```

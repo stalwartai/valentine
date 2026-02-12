@@ -78,7 +78,7 @@ Publish directory: frontend/build
 
 **Environment Variables:**
 ```
-REACT_APP_BACKEND_URL=https://heartsinsight.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://memory-gifts.preview.emergentagent.com
 ```
 
 6. Click "Deploy site"
@@ -86,7 +86,7 @@ REACT_APP_BACKEND_URL=https://heartsinsight.preview.emergentagent.com
 ### Step 3: Backend Deployment
 
 **Backend is already deployed!**
-- Current URL: `https://heartsinsight.preview.emergentagent.com`
+- Current URL: `https://memory-gifts.preview.emergentagent.com`
 - No changes needed for Phase 1
 - API endpoint `/api/generate-gifts` already working
 
