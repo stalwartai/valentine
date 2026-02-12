@@ -88,17 +88,17 @@
   --error-800: #851F1F;
   --error-900: #661919;
 
-  /* Valentine's Gradients - Deep Romantic */
-  --gradient-romance: linear-gradient(135deg, #C41E3A 0%, #DC143C 50%, #E63950 100%);
-  --gradient-sunset: linear-gradient(135deg, #DC143C 0%, #FF6B7F 100%);
-  --gradient-hero: linear-gradient(180deg, #FFF0F3 0%, #FFE0E6 50%, #FFF5F5 100%);
-  --gradient-dreamy: linear-gradient(180deg, #FFF5F5 0%, #FFE0E6 50%, #FFF5F5 100%);
-  --gradient-cta: linear-gradient(135deg, #C41E3A 0%, #DC143C 50%, #E63950 100%);
-  --gradient-deep-love: linear-gradient(135deg, #8B0000 0%, #C41E3A 50%, #DC143C 100%);
-  --gradient-passion: linear-gradient(135deg, #DC143C 0%, #C41E3A 100%);
-  --gradient-soft-glow: radial-gradient(circle at 50% 0%, rgba(196, 30, 58, 0.15), transparent 70%);
-  --gradient-warm-overlay: linear-gradient(135deg, rgba(220, 20, 60, 0.1) 0%, rgba(196, 30, 58, 0.1) 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 240, 243, 0.7) 100%);
+  /* Valentine's Gradients - Soft Romantic Pink */
+  --gradient-romance: linear-gradient(135deg, #E75480 0%, #FF8FA3 50%, #FFB3C1 100%);
+  --gradient-sunset: linear-gradient(135deg, #FF8A9B 0%, #FFB3BA 100%);
+  --gradient-hero: linear-gradient(180deg, #FFE8ED 0%, #FFF0F3 50%, #FFF5F7 100%);
+  --gradient-dreamy: linear-gradient(180deg, #FFF5F7 0%, #FFE8ED 50%, #FFF5F7 100%);
+  --gradient-cta: linear-gradient(135deg, #E75480 0%, #FF8FA3 100%);
+  --gradient-deep-love: linear-gradient(135deg, #D14570 0%, #E75480 50%, #FF8FA3 100%);
+  --gradient-passion: linear-gradient(135deg, #E75480 0%, #FF8A9B 100%);
+  --gradient-soft-glow: radial-gradient(circle at 50% 0%, rgba(231, 84, 128, 0.12), transparent 70%);
+  --gradient-warm-overlay: linear-gradient(135deg, rgba(255, 179, 186, 0.15) 0%, rgba(231, 84, 128, 0.1) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 240, 243, 0.8) 100%);
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.92);
