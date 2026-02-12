@@ -102,73 +102,91 @@ async def get_status_checks():
 @api_router.post("/generate-gifts", response_model=GiftResponse)
 async def generate_gifts(request: GiftIdeaRequest):
     try:
-        system_prompt = """You're helping someone find a meaningful gift for someone they care about.
+        system_prompt = """You're a friend who's genuinely good at finding meaningful gifts. Not a salesperson, not a bot - just someone who gets it.
 
-Talk naturally, like a friend who's good at gift ideas. Don't be overly poetic or formal.
+Your job: Help them find a gift that makes the recipient think "wow, they really know me."
 
-What matters:
-- Understand what makes their relationship special
-- Suggest gifts that feel personal, not generic
-- Be practical - tell them exactly what to get and where
-- Keep it real and conversational
+How to think about this:
+- Read their story carefully. What makes THIS relationship special?
+- Their original idea tells you something - what were they sensing?
+- Find the emotional thread, then suggest something practical
 
-For each gift:
-- title: Simple, clear name (5-6 words max)
-- description: What it actually is (20-30 words, plain language)
-- why_it_works: Why this fits THEM specifically (2-3 sentences, natural tone)
-- personalization_tip: One specific thing they can do to make it extra special
-- estimated_cost: Like "₹1,500" or "₹800-1,200" 
+Your style:
+- Conversational. Like texting a friend who asked for help.
+- Specific. "Get a leather notebook from Bombay Trooper" beats "Consider a journal"
+- Honest. If their budget is tight, work with it. Don't oversell.
+- Surprising. The best gifts make people say "I never would've thought of that, but it's perfect"
+
+For each gift idea:
+- title: Clear and simple (not cutesy or corny)
+- description: What it actually IS in plain words
+- why_it_works: Connect it to THEIR story. Be specific.
+- personalization_tip: One concrete thing to make it theirs
+- estimated_cost: Real prices in INR
 - category: thoughtful/creative/experiential/practical/romantic
 
-For the bundle, items_list MUST be an array of objects with this exact structure:
-[{"item": "item name", "cost": "₹500", "where": "where to buy"}]
+For the bundle (multiple small items packaged together):
+- items_list MUST be array of objects: [{"item": "name", "cost": "₹500", "where": "shop"}]
+- total_cost, presentation_tips, note_template, pro_tip - all required
 
-Return only valid JSON. Keep language simple and friendly."""
+Output: Pure JSON only. No markdown, no explanations outside JSON."""
 
-        user_prompt = f"""About this gift:
+        user_prompt = f"""Here's the situation:
 
-Who it's for: {request.recipient_name}
-From: {request.giver_name}
-Budget: ₹{request.budget}
+**Gift for:** {request.recipient_name}
+**From:** {request.giver_name}  
+**Budget:** Around ₹{request.budget}
 
-About {request.recipient_name}:
+**About {request.recipient_name}:**
 {request.about_them}
 
-A memory that matters:
+**A memory that matters to them:**
 {request.special_memory}
 
-{request.giver_name}'s original gift idea: {request.giver_gift_idea}
-Why they thought of this: {request.why_meaningful}
+**{request.giver_name}'s original idea:** "{request.giver_gift_idea}"
+**Why they thought of it:** {request.why_meaningful}
 
 ---
 
-What I need:
+I need:
 
-1. Take {request.giver_name}'s idea ("{request.giver_gift_idea}") and make it better - add details, make it more special
+1. **ENHANCED VERSION** of their idea - take "{request.giver_gift_idea}" and make it amazing. Add details that show you understood their story.
 
-2. Come up with 3 completely different gift ideas that:
-   - Connect to what makes their relationship unique
-   - Aren't obvious (surprise them with how well you got it)
-   - Cost around ₹{request.budget} or less
-   - Are actually available in India
+2. **3 ALTERNATIVE IDEAS** that:
+   - Connect to something in their story they might not have noticed
+   - Aren't the obvious choice (no generic "photo book" unless it's truly special)
+   - Are actually buyable in India for ₹{request.budget} or less
+   - Would make {request.recipient_name} feel truly seen
 
-3. Create a complete gift bundle idea (combining 3-5 small items)
+3. **ONE GIFT BUNDLE** - 3-5 smaller items that tell a story together
 
-CRITICAL - Bundle MUST have ALL these fields:
-- bundle_name: string (name of the bundle)
-- items_list: array of objects [{{"item": "name", "cost": "₹500", "where": "shop"}}]
-- total_cost: string (like "₹2,500")
-- presentation_tips: string (how to arrange/present it)
-- note_template: string (message they can write)
-- pro_tip: string (one extra special touch)
+Return this exact JSON structure:
+{{
+  "gifts": [
+    {{
+      "title": "...",
+      "description": "...",
+      "why_it_works": "...",
+      "personalization_tip": "...",
+      "estimated_cost": "...",
+      "category": "..."
+    }}
+  ],
+  "bundle": {{
+    "bundle_name": "...",
+    "items_list": [{{"item": "...", "cost": "...", "where": "..."}}],
+    "total_cost": "...",
+    "presentation_tips": "...",
+    "note_template": "...",
+    "pro_tip": "..."
+  }}
+}}
 
-Return JSON: {{"gifts": [4 gifts], "bundle": {{"bundle_name": "...", "items_list": [...], "total_cost": "...", "presentation_tips": "...", "note_template": "...", "pro_tip": "..."}}}}
-
-Keep it natural and helpful, not overly fancy."""
+Remember: Sound like a helpful friend, not a catalog. Make it personal."""
 
         model = genai.GenerativeModel('gemini-2.5-flash')
         
-        logging.info("Calling Gemini API...")
+        logging.info("Calling Gemini API with gemini-2.5-flash model...")
         response = model.generate_content(f"{system_prompt}\n\n{user_prompt}")
         
         if not response or not response.text:
@@ -176,7 +194,7 @@ Keep it natural and helpful, not overly fancy."""
             raise ValueError("AI returned empty response")
         
         response_text = response.text.strip()
-        logging.info(f"Raw AI response (first 200 chars): {response_text[:200]}")
+        logging.info(f"Raw AI response (first 300 chars): {response_text[:300]}")
         
         # Extract JSON from response - AI might add extra text
         json_start = -1
@@ -211,7 +229,7 @@ Keep it natural and helpful, not overly fancy."""
             raise ValueError("AI response does not contain valid JSON")
         
         response_text = response_text[json_start:json_end].strip()
-        logging.info(f"Extracted JSON (first 200 chars): {response_text[:200]}")
+        logging.info(f"Extracted JSON (first 300 chars): {response_text[:300]}")
         
         if not response_text:
             logging.error("Response text is empty after extraction")
@@ -234,7 +252,7 @@ Keep it natural and helpful, not overly fancy."""
             logging.error("Gifts array is empty")
             raise ValueError("AI returned empty gifts array")
         
-        logging.info(f"Successfully parsed {len(result['gifts'])} gifts")
+        logging.info(f"Successfully parsed {len(result['gifts'])} gifts from gemini-2.5-flash")
         return GiftResponse(**result)
         
     except json.JSONDecodeError as e:
