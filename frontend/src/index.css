@@ -306,39 +306,39 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--neutral-100);
-  border-radius: var(--radius-md);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--primary-400), var(--primary-500));
-  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, var(--primary-300), var(--accent-500));
+  border-radius: 10px;
   border: 2px solid var(--neutral-100);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--primary-500), var(--primary-600));
+  background: linear-gradient(180deg, var(--primary-400), var(--accent-600));
 }
 
 /* Selection */
 ::selection {
   background: var(--primary-200);
-  color: var(--primary-900);
+  color: var(--neutral-900);
 }
 
 ::-moz-selection {
   background: var(--primary-200);
-  color: var(--primary-900);
+  color: var(--neutral-900);
 }
 
 /* Focus Visible */
 :focus-visible {
-  outline: 2px solid var(--primary-500);
+  outline: 2px solid var(--accent-500);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -351,9 +351,5 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-  
-  body::before {
-    animation: none !important;
   }
 }
