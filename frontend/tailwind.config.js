@@ -8,13 +8,18 @@ module.exports = {
         border: "var(--neutral-300)",
         input: "var(--neutral-200)",
         ring: "var(--accent-500)",
-        background: "var(--neutral-50)",
-        foreground: "var(--neutral-900)",
+        background: "var(--cream)",
+        foreground: "var(--warm-gray)",
         
-        // Valentine's Colors
+        // Deep Red Valentine's Colors
         blush: "var(--blush-pink)",
         coral: "var(--coral-pink)",
         cream: "var(--cream)",
+        love: "var(--love-red)",
+        blood: "var(--blood-red)",
+        wine: "var(--wine-red)",
+        passion: "var(--passion-red)",
+        rose: "var(--rose-red)",
         
         primary: {
           50: "var(--primary-50)",
@@ -27,8 +32,8 @@ module.exports = {
           700: "var(--primary-700)",
           800: "var(--primary-800)",
           900: "var(--primary-900)",
-          DEFAULT: "var(--primary-300)",
-          foreground: "var(--neutral-900)",
+          DEFAULT: "var(--primary-600)",
+          foreground: "#FFFFFF",
         },
         
         secondary: {
@@ -42,8 +47,8 @@ module.exports = {
           700: "var(--secondary-700)",
           800: "var(--secondary-800)",
           900: "var(--secondary-900)",
-          DEFAULT: "var(--secondary-300)",
-          foreground: "var(--neutral-900)",
+          DEFAULT: "var(--secondary-500)",
+          foreground: "var(--warm-gray)",
         },
         
         accent: {
