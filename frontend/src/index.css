@@ -5,48 +5,55 @@
 @tailwind utilities;
 
 :root {
-  /* Valentine's Color Palette - Warm & Romantic */
+  /* Valentine's Color Palette - Deep Romantic Reds */
   --blush-pink: #FFB3BA;
   --light-pink: #FFCCCB;
   --coral-pink: #FF6F61;
-  --cream: #FFF5EE;
-  --warm-gray: #333333;
+  --cream: #FFF5F5;
+  --warm-gray: #2D2D2D;
   
-  /* Primary - Soft Blush Pink */
-  --primary-50: #FFF5F7;
-  --primary-100: #FFE8EC;
-  --primary-200: #FFCCCB;
-  --primary-300: #FFB3BA;
-  --primary-400: #FF9AA2;
-  --primary-500: #FF8A94;
-  --primary-600: #FF6F61;
-  --primary-700: #E85A4F;
-  --primary-800: #D14840;
-  --primary-900: #B83A32;
+  /* Deep Love Red - Blood Red / Romantic Red */
+  --love-red: #C41E3A;
+  --blood-red: #8B0000;
+  --wine-red: #722F37;
+  --rose-red: #E32636;
+  --passion-red: #DC143C;
+  
+  /* Primary - Deep Rose & Love Red */
+  --primary-50: #FFF0F3;
+  --primary-100: #FFE0E6;
+  --primary-200: #FFC2CC;
+  --primary-300: #FF9AAA;
+  --primary-400: #FF6B7F;
+  --primary-500: #E63950;
+  --primary-600: #C41E3A;
+  --primary-700: #A31530;
+  --primary-800: #8B0A25;
+  --primary-900: #720520;
 
-  /* Secondary - Light Pink & Peach */
-  --secondary-50: #FFF8F5;
-  --secondary-100: #FFEDE0;
-  --secondary-200: #FFD9C2;
-  --secondary-300: #FFCCCB;
-  --secondary-400: #FFB3BA;
-  --secondary-500: #FF9F9F;
-  --secondary-600: #FF8A8A;
-  --secondary-700: #E87070;
-  --secondary-800: #D15A5A;
-  --secondary-900: #B84545;
+  /* Secondary - Soft Rose & Blush */
+  --secondary-50: #FFF8F9;
+  --secondary-100: #FFECEF;
+  --secondary-200: #FFD9DF;
+  --secondary-300: #FFBCC7;
+  --secondary-400: #FF9AAA;
+  --secondary-500: #FF7A8A;
+  --secondary-600: #E85A6A;
+  --secondary-700: #D14050;
+  --secondary-800: #B83040;
+  --secondary-900: #9E2030;
 
-  /* Accent - Coral Pink (Buttons & CTAs) */
-  --accent-50: #FFF5F3;
-  --accent-100: #FFE8E4;
-  --accent-200: #FFD1C9;
-  --accent-300: #FFB5A8;
-  --accent-400: #FF9485;
-  --accent-500: #FF6F61;
-  --accent-600: #E85A4F;
-  --accent-700: #D14840;
-  --accent-800: #B83A32;
-  --accent-900: #9E2D27;
+  /* Accent - Passion Red (Buttons & CTAs) */
+  --accent-50: #FFF5F6;
+  --accent-100: #FFE5E8;
+  --accent-200: #FFCCD2;
+  --accent-300: #FFA8B2;
+  --accent-400: #FF7A8A;
+  --accent-500: #DC143C;
+  --accent-600: #C41E3A;
+  --accent-700: #A31530;
+  --accent-800: #8B0A25;
+  --accent-900: #720520;
 
   /* Neutral - Warm Creams & Grays */
   --neutral-0: #FFFFFF;
@@ -86,15 +93,17 @@
   --error-800: #851F1F;
   --error-900: #661919;
 
-  /* Valentine's Gradients - Soft & Romantic */
-  --gradient-romance: linear-gradient(135deg, #FFB3BA 0%, #FF6F61 100%);
-  --gradient-sunset: linear-gradient(135deg, #FF6F61 0%, #FFB3BA 100%);
-  --gradient-hero: linear-gradient(180deg, #FFB3BA 0%, #FFF5EE 100%);
-  --gradient-dreamy: linear-gradient(180deg, #FFF5EE 0%, #FFCCCB 50%, #FFF5EE 100%);
-  --gradient-cta: linear-gradient(135deg, #FF6F61 0%, #FFB3BA 100%);
-  --gradient-soft-glow: radial-gradient(circle at 50% 0%, rgba(255, 111, 97, 0.15), transparent 70%);
-  --gradient-warm-overlay: linear-gradient(135deg, rgba(255, 179, 186, 0.2) 0%, rgba(255, 111, 97, 0.1) 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 245, 238, 0.6) 100%);
+  /* Valentine's Gradients - Deep Romantic */
+  --gradient-romance: linear-gradient(135deg, #C41E3A 0%, #DC143C 50%, #E63950 100%);
+  --gradient-sunset: linear-gradient(135deg, #DC143C 0%, #FF6B7F 100%);
+  --gradient-hero: linear-gradient(180deg, #FFF0F3 0%, #FFE0E6 50%, #FFF5F5 100%);
+  --gradient-dreamy: linear-gradient(180deg, #FFF5F5 0%, #FFE0E6 50%, #FFF5F5 100%);
+  --gradient-cta: linear-gradient(135deg, #C41E3A 0%, #DC143C 50%, #E63950 100%);
+  --gradient-deep-love: linear-gradient(135deg, #8B0000 0%, #C41E3A 50%, #DC143C 100%);
+  --gradient-passion: linear-gradient(135deg, #DC143C 0%, #C41E3A 100%);
+  --gradient-soft-glow: radial-gradient(circle at 50% 0%, rgba(196, 30, 58, 0.15), transparent 70%);
+  --gradient-warm-overlay: linear-gradient(135deg, rgba(220, 20, 60, 0.1) 0%, rgba(196, 30, 58, 0.1) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 240, 243, 0.7) 100%);
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.9);
