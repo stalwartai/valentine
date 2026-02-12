@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, Gift, RefreshCw, Edit, Lock, Sparkles, BookOpen, Crown } from "lucide-react";
@@ -28,9 +28,9 @@ export default function ResultsPagePhase1() {
     }
 
     generateGifts(formData);
-  }, []);
+  }, [location.state?.formData, navigate, generateGifts]);
 
-  const generateGifts = async (formData) => {
+  const generateGifts = useCallback(async (formData) => {
     try {
       setLoading(true);
       setProgress(0);
@@ -66,7 +66,7 @@ export default function ResultsPagePhase1() {
       toast.error("Failed to generate gift ideas. Please try again.");
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleRegenerate = () => {
     const formData = JSON.parse(localStorage.getItem('giftFormData') || 'null');
