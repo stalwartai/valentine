@@ -18,18 +18,6 @@ export default function ResultsPagePhase1() {
   const [progress, setProgress] = useState(0);
   const [showComingSoon, setShowComingSoon] = useState(false);
 
-  useEffect(() => {
-    const formData = location.state?.formData || JSON.parse(localStorage.getItem('giftFormData') || 'null');
-    
-    if (!formData) {
-      toast.error("No form data found. Please fill out the form first.");
-      navigate('/form');
-      return;
-    }
-
-    generateGifts(formData);
-  }, [location.state?.formData, navigate, generateGifts]);
-
   const generateGifts = useCallback(async (formData) => {
     try {
       setLoading(true);
@@ -67,6 +55,18 @@ export default function ResultsPagePhase1() {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    const formData = location.state?.formData || JSON.parse(localStorage.getItem('giftFormData') || 'null');
+    
+    if (!formData) {
+      toast.error("No form data found. Please fill out the form first.");
+      navigate('/form');
+      return;
+    }
+
+    generateGifts(formData);
+  }, [location.state?.formData, navigate, generateGifts]);
 
   const handleRegenerate = () => {
     const formData = JSON.parse(localStorage.getItem('giftFormData') || 'null');
@@ -235,7 +235,7 @@ export default function ResultsPagePhase1() {
               Create Your Story
             </Button>
             <p className="text-xs text-neutral-500 mt-4">
-              Coming Soon • Valentine's Day 2025
+              Coming Soon • Valentine's Day 2026
             </p>
           </div>
         </motion.div>
@@ -300,7 +300,7 @@ export default function ResultsPagePhase1() {
                 Coming Very Soon!
               </h3>
               <p className="text-neutral-600 font-body mb-6">
-                We're putting the final touches on this feature. Full gift details and personalized storybook creation will be available before Valentine's Day 2025.
+                We're putting the final touches on this feature. Full gift details and personalized storybook creation will be available before Valentine's Day 2026.
               </p>
               <Button
                 onClick={() => setShowComingSoon(false)}

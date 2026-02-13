@@ -15,9 +15,23 @@ import json
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+
+mongo_url = os.environ.get('MONGO_URL')
+client = None
+db = None
+
+if mongo_url:
+    try:
+        client = AsyncIOMotorClient(mongo_url)
+        db = client[os.environ.get('DB_NAME', 'valentine_db')]
+        logging.info("Connected to MongoDB")
+    except Exception as e:
+        logging.warning(f"Failed to connect to MongoDB: {e}")
+        client = None
+        db = None
+else:
+    logging.warning("MONGO_URL not found. Database features will be disabled.")
+
 
 gemini_api_key = os.environ.get('GEMINI_API_KEY')
 if gemini_api_key:
@@ -85,11 +99,18 @@ async def create_status_check(input: StatusCheckCreate):
     doc = status_obj.model_dump()
     doc['timestamp'] = doc['timestamp'].isoformat()
     
-    _ = await db.status_checks.insert_one(doc)
+    if db is not None:
+        _ = await db.status_checks.insert_one(doc)
+    else:
+        logging.warning("Database not connected, skipping status check storage")
+        
     return status_obj
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
+    if db is None:
+        return []
+        
     status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
     
     for check in status_checks:
@@ -283,4 +304,9 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    if client:
+        client.close()
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
